@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Task extends Model
 {
@@ -31,7 +33,7 @@ class Task extends Model
     /**
      * Get the parent task
      */
-    public function parent()
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');
     }
@@ -39,7 +41,7 @@ class Task extends Model
     /**
      * Get the children tasks
      */
-    public function children()
+    public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id');
     }
@@ -47,7 +49,7 @@ class Task extends Model
     /**
      * Get the project
      */
-    public function project()
+    public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
@@ -55,7 +57,7 @@ class Task extends Model
     /**
      * Get the status
      */
-    public function status()
+    public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
     }
