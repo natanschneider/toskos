@@ -1,0 +1,55 @@
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx.dockerfile
+    container_name: toskos_nginx
+    ports:
+      - "83:83"
+      - "445:445"
+    depends_on:
+      app:
+        condition: service_healthy
+    networks:
+      - internal-docker
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: toskos_app
+    ports:
+      - "9001:9001"
+    env_file: .env
+    environment:
+      INERTIA_SSR_URL: http://toskos_ssr:13715
+    volumes:
+      - storage:/var/www/html/storage
+      - bootstrap_cache:/var/www/html/bootstrap/cache
+    healthcheck:
+      test: ["CMD", "php-fpm", "-t"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    networks:
+      - internal-docker
+    restart: unless-stopped
+
+  ssr:
+    build:
+      context: .
+      dockerfile: ssr.dockerfile
+    container_name: toskos_ssr
+    networks:
+      - internal-docker
+    restart: unless-stopped
+
+volumes:
+  storage:
+  bootstrap_cache:
+
+networks:
+  internal-docker:
+    external: true
