@@ -28,12 +28,12 @@ class ProjectRepository
         return DB::transaction(function () use ($request) {
             $project = Project::create([
                 'name' => $request->name,
-                'created_by' => $request->user()->name
+                'created_by' => $request->user()->name,
             ]);
 
             UserProject::create([
                 'project_id' => $project->id,
-                'user_id' => $request->user()->id
+                'user_id' => $request->user()->id,
             ]);
 
             return $project;
@@ -43,7 +43,7 @@ class ProjectRepository
     public static function update(ProjectRequest $request): Project
     {
         Project::where('id', $request->id)->update([
-            'name' => $request->name
+            'name' => $request->name,
         ]);
 
         return Project::find($request->id);
