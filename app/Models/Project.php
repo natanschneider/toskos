@@ -11,6 +11,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Project extends Model
 {
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'project';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -33,6 +40,6 @@ class Project extends Model
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(UserProject::class);
+        return $this->belongsToMany(UserProject::class, 'project_user');
     }
 }
