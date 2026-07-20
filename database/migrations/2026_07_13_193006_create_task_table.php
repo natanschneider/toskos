@@ -21,12 +21,12 @@ return new class extends Migration
         Schema::create('task', function (Blueprint $table): void {
             $table->id();
             $table->string('name', 255);
-            $table->timestamp('start_date');
-            $table->timestamp('end_date');
-            $table->timestamp('planned_start_date');
-            $table->timestamp('planned_end_date');
-            $table->string('responsible');
-            $table->string('supervisor');
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
+            $table->timestamp('planned_start_date')->nullable();
+            $table->timestamp('planned_end_date')->nullable();
+            $table->string('responsible')->nullable();
+            $table->string('supervisor')->nullable();
             $table->string('doc_file', 500)->nullable();
             $table->unsignedBigInteger('status_id');
             $table->string('created_by', 255);
