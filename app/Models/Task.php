@@ -68,4 +68,12 @@ class Task extends Model
     {
         return $this->belongsTo(Status::class);
     }
+
+    /**
+     * Get the comments
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comments::class);
+    }
 }

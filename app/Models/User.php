@@ -49,6 +49,14 @@ class User extends Authenticatable implements PasskeyUser
     }
 
     /**
+     * Get the comments
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comments::class);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
