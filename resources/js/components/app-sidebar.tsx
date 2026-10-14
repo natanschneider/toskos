@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid } from 'lucide-react';
+import { CircleCheckBig, LayoutGrid } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -16,11 +16,15 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
+import { Index as TaskIndex } from '@/actions/App/Http/Controllers/TaskController';
 
 export function AppSidebar() {
     const page = usePage();
     const dashboardUrl = page.props.currentTeam
         ? dashboard(page.props.currentTeam.slug)
+        : '/';
+    const taskUrl = page.props.currentTeam
+        ? TaskIndex(page.props.currentTeam.slug)
         : '/';
 
     const mainNavItems: NavItem[] = [
@@ -29,6 +33,11 @@ export function AppSidebar() {
             href: dashboardUrl,
             icon: LayoutGrid,
         },
+        {
+            title: 'Tasks',
+            href: taskUrl,
+            icon: CircleCheckBig
+        }
     ];
 
     const footerNavItems: NavItem[] = [
