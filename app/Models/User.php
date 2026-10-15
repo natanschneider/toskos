@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -63,5 +64,18 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class, 'user_id');
+    }
+
+    /**
+     * Get all members of this team.
+     *
+     * @return BelongsToMany<Team, $this, Membership, 'pivot'>
+     */
+    public function teams(): BelongsToMany
+    {
+        return $this->belongsToMany(Team::class, 'team_members', 'team_id', 'user_id')
+            ->using(Membership::class)
+            ->withPivot(['role'])
+            ->withTimestamps();
     }
 }
