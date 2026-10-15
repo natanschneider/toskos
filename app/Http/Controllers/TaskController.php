@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Status;
 use App\Repositories\TaskRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -15,6 +16,18 @@ class TaskController extends Controller
 
         return Inertia::render('tasks/index', [
             'tasks' => $repo
+        ]);
+    }
+
+    public static function Create(string $current_team, Request $request, string|null $parent_task=null): Response
+    {
+        $users = $request->user()->currentTeam->members;
+
+        $status = Status::query()->get();
+
+        return Inertia::render('tasks/edit', [
+            'users' => $users,
+            'status' => $status
         ]);
     }
 }
