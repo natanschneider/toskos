@@ -2,9 +2,9 @@ import Heading from "@/components/heading";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { index } from "@/routes/task";
+import { create, index } from "@/routes/task";
 import { Task } from "@/types";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import { useMemo, useState } from "react";
 
 type Props = {
@@ -12,6 +12,7 @@ type Props = {
 };
 
 export default function TasksIndex({ tasks }: Props) {
+    const { currentTeam } = usePage().props;
     const [query, setQuery] = useState('');
 
     const filtered = useMemo(() => {
@@ -37,7 +38,9 @@ export default function TasksIndex({ tasks }: Props) {
                         description="Manage your tasks"
                     />
 
-                    <Button>Create Task</Button>
+                    <Link href={create({ current_team: currentTeam.slug, parent_task: null }).url}>
+                        <Button>Create Task</Button>
+                    </Link>
                 </div>
                 <div className="flex items-center justify-between">
                     <Input
