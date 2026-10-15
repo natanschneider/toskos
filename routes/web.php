@@ -13,6 +13,7 @@ Route::prefix('{current_team}')
     ->group(function () {
         Route::get('dashboard', DashboardController::class)->name('dashboard');
         Route::get('tasks', [TaskController::class, 'Index'])->name('task.index');
+        Route::get('tasks/create/{parent_task?}', [TaskController::class, 'create'])->name('task.create');
     });
 
 Route::middleware(['auth'])->group(function () {
