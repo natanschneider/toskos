@@ -15,6 +15,7 @@ class TaskRepository
                 $query->whereKey($request->user()->currentTeam->getKey());
             })
             ->where('parent_id', null)
+            ->with(['status', 'responsible'])
             ->get();
 
         return $tasks;
