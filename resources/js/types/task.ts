@@ -1,3 +1,6 @@
+import { User } from "./auth";
+import { Status } from "./status";
+
 export interface Task {
   id: number;
   name: string;
@@ -5,10 +8,11 @@ export interface Task {
   end_date: string | null;
   planned_start_date: string | null;
   planned_end_date: string | null;
-  responsible: string | null;
+  responsible: User | null;
   supervisor: string | null;
   doc_file: string | null;
   status_id: number;
+  status: Status
   created_by: string;
   team_id: number;
   parent_id: number | null;
