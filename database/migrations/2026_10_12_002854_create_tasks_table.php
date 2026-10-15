@@ -23,8 +23,8 @@ return new class extends Migration
             $table->timestamp('end_date')->nullable();
             $table->timestamp('planned_start_date')->nullable();
             $table->timestamp('planned_end_date')->nullable();
-            $table->string('responsible')->nullable();
-            $table->string('supervisor')->nullable();
+            $table->unsignedBigInteger('responsible')->nullable();
+            $table->unsignedBigInteger('supervisor')->nullable();
             $table->string('doc_file', 500)->nullable();
             $table->unsignedBigInteger('status_id');
             $table->string('created_by', 255);
@@ -35,6 +35,8 @@ return new class extends Migration
             $table->foreign('status_id')->references('id')->on('status');
             $table->foreign('team_id')->references('id')->on('teams');
             $table->foreign('parent_id')->references('id')->on('tasks');
+            $table->foreign('responsible')->references('id')->on('users');
+            $table->foreign('supervisor')->references('id')->on('users');
         });
     }
 

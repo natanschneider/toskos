@@ -116,4 +116,24 @@ class Task extends Model
     {
         return $this->hasMany(Task::class, 'parent_id');
     }
+
+    /**
+     * Get responsible user
+     *
+     * @return BelongsTo
+     */
+    public function responsible(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'responsible');
+    }
+
+    /**
+     * Get supervisor user
+     *
+     * @return BelongsTo
+     */
+    public function supervisorUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'supervisor');
+    }
 }
