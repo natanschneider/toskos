@@ -22,7 +22,7 @@ class TaskController extends Controller
         ]);
     }
 
-    public static function Create(string $current_team, Request $request, string|null $parent_task=null): Response
+    public static function Create(string $current_team, Request $request, ?string $parent_task = null): Response
     {
         $users = $request->user()->currentTeam->members;
 
@@ -32,5 +32,25 @@ class TaskController extends Controller
             'users' => $users,
             'status' => $status,
         ]);
+    }
+
+    public static function Store(TaskRequest $request): RedirectResponse
+    {
+        $task = Task::create([
+            'name'               => $request->input('name'),
+            'start_date'         => $request->input('startDate'),
+            'end_date'           => $request->input('endDate'),
+            'planned_start_date' => $request->input('plannedStartDate'),
+            'planned_end_date'   => $request->input('plannedEndDate'),
+            'responsible'        => $request->input('responsible'),
+            'supervisor'         => $request->input('supervisor'),
+            'status_id'          => $request->input('status'),
+            'team_id'            => $request->input('team'),
+            'parent_id'          => $request->input('parent'),
+            'created_by'         => $request->user()->id,
+            'team_id'            => $request->user()->currentTeam->id,
+        ]);
+
+        return redirect()->route('task.index');
     }
 }
