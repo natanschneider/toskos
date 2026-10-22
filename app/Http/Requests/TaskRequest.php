@@ -12,7 +12,7 @@ class TaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,18 +22,18 @@ class TaskRequest extends FormRequest
      */
     public function rules(): array
     {
-        return match($this->method) {
+        return match ($this->method) {
             'POST' => [
                 'name' => ['required', 'string', 'max:255'],
                 'startDate' => ['date'],
                 'endDate' => ['date'],
                 'plannedStartDate' => ['date'],
                 'plannedEndDate' => ['date'],
-                'responsible' => ['int', 'exist:users,id'],
-                'supervisor' => ['int', 'exist:users,id'],
-                'status' => ['int', 'exist:status,id'],
-                'team' => ['int', 'exist:teams,id'],
-                'parent' => ['int', 'exist:tasks,id']
+                'responsible' => ['int', 'exists:users,id'],
+                'supervisor' => ['int', 'exists:users,id'],
+                'status' => ['int', 'exists:status,id'],
+                'team' => ['int', 'exists:teams,id'],
+                'parent' => ['int', 'exists:tasks,id'],
             ],
             default => [
                 'name' => ['required', 'string', 'max:255'],
@@ -41,11 +41,11 @@ class TaskRequest extends FormRequest
                 'endDate' => ['date'],
                 'plannedStartDate' => ['date'],
                 'plannedEndDate' => ['date'],
-                'responsible' => ['int', 'exist:users,id'],
-                'supervisor' => ['int', 'exist:users,id'],
-                'status' => ['int', 'exist:status,id'],
-                'team' => ['int', 'exist:teams,id'],
-                'parent' => ['int', 'exist:tasks,id']
+                'responsible' => ['int', 'exists:users,id'],
+                'supervisor' => ['int', 'exists:users,id'],
+                'status' => ['int', 'exists:status,id'],
+                'team' => ['int', 'exists:teams,id'],
+                'parent' => ['int', 'exists:tasks,id'],
             ]
         };
     }
