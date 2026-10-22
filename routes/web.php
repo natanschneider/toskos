@@ -14,6 +14,7 @@ Route::prefix('{current_team}')
         Route::get('dashboard', DashboardController::class)->name('dashboard');
         Route::get('tasks', [TaskController::class, 'Index'])->name('task.index');
         Route::get('tasks/create/{parent_task?}', [TaskController::class, 'create'])->name('task.create');
+        Route::post('tasks/create', [TaskController::class, 'store'])->name('task.store');
     });
 
 Route::middleware(['auth'])->group(function () {
@@ -21,4 +22,4 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('invitations/{invitation}', [TeamInvitationController::class, 'decline'])->name('invitations.decline');
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';

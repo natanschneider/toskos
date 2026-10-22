@@ -1,11 +1,18 @@
-import Heading from "@/components/heading";
-import InputError from "@/components/input-error";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { User, Status } from "@/types";
-import { Form, Head } from "@inertiajs/react";
+import TaskController from '@/actions/App/Http/Controllers/TaskController';
+import Heading from '@/components/heading';
+import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { User, Status } from '@/types';
+import { Form, Head, usePage } from '@inertiajs/react';
 
 type Props = {
     users: User[];
@@ -13,6 +20,8 @@ type Props = {
 };
 
 export default function TasksManipulate({ users, status }: Props) {
+    const { currentTeam } = usePage().props;
+
     return (
         <>
             <Head title="Task" />
@@ -26,7 +35,10 @@ export default function TasksManipulate({ users, status }: Props) {
                         description="Update or create your task information"
                     />
 
-                    <Form className="w-full">
+                    <Form
+                        {...TaskController.store.form(currentTeam.slug)}
+                        className="w-full"
+                    >
                         {({ errors, processing }) => (
                             <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                                 <div className="grid gap-2">
@@ -36,38 +48,69 @@ export default function TasksManipulate({ users, status }: Props) {
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="startDate">Start Date</Label>
-                                    <Input id="startDate" name="startDate" type="date" />
+                                    <Label htmlFor="startDate">
+                                        Start Date
+                                    </Label>
+                                    <Input
+                                        id="startDate"
+                                        name="startDate"
+                                        type="date"
+                                    />
                                     <InputError message={errors.startDate} />
                                 </div>
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="endDate">End Date</Label>
-                                    <Input id="endDate" name="endDate" type="date" />
+                                    <Input
+                                        id="endDate"
+                                        name="endDate"
+                                        type="date"
+                                    />
                                     <InputError message={errors.endDate} />
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="plannedStartDate">Planned Start Date</Label>
-                                    <Input id="plannedStartDate" name="plannedStartDate" type="date" />
-                                    <InputError message={errors.plannedStartDate} />
+                                    <Label htmlFor="plannedStartDate">
+                                        Planned Start Date
+                                    </Label>
+                                    <Input
+                                        id="plannedStartDate"
+                                        name="plannedStartDate"
+                                        type="date"
+                                    />
+                                    <InputError
+                                        message={errors.plannedStartDate}
+                                    />
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="plannedEndDate">Planned End Date</Label>
-                                    <Input id="plannedEndDate" name="plannedEndDate" type="date" />
-                                    <InputError message={errors.plannedEndDate} />
+                                    <Label htmlFor="plannedEndDate">
+                                        Planned End Date
+                                    </Label>
+                                    <Input
+                                        id="plannedEndDate"
+                                        name="plannedEndDate"
+                                        type="date"
+                                    />
+                                    <InputError
+                                        message={errors.plannedEndDate}
+                                    />
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="responsible">Responsible</Label>
+                                    <Label htmlFor="responsible">
+                                        Responsible
+                                    </Label>
                                     <Select name="responsible">
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a responsible" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {users.map((user) => (
-                                                <SelectItem key={user.id} value={user.id.toString()}>
+                                                <SelectItem
+                                                    key={user.id}
+                                                    value={user.id.toString()}
+                                                >
                                                     {user.name}
                                                 </SelectItem>
                                             ))}
@@ -77,14 +120,19 @@ export default function TasksManipulate({ users, status }: Props) {
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="supervisor">Supervisor</Label>
+                                    <Label htmlFor="supervisor">
+                                        Supervisor
+                                    </Label>
                                     <Select name="supervisor">
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a supervisor" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {users.map((user) => (
-                                                <SelectItem key={user.id} value={user.id.toString()}>
+                                                <SelectItem
+                                                    key={user.id}
+                                                    value={user.id.toString()}
+                                                >
                                                     {user.name}
                                                 </SelectItem>
                                             ))}
@@ -101,7 +149,10 @@ export default function TasksManipulate({ users, status }: Props) {
                                         </SelectTrigger>
                                         <SelectContent>
                                             {status.map((stat) => (
-                                                <SelectItem key={stat.id} value={stat.id.toString()}>
+                                                <SelectItem
+                                                    key={stat.id}
+                                                    value={stat.id.toString()}
+                                                >
                                                     {stat.name}
                                                 </SelectItem>
                                             ))}
