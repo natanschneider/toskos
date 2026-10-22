@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskRequest;
 use App\Models\Status;
+use App\Models\Task;
 use App\Repositories\TaskRepository;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -15,7 +18,7 @@ class TaskController extends Controller
         $repo = TaskRepository::Index($request);
 
         return Inertia::render('tasks/index', [
-            'tasks' => $repo
+            'tasks' => $repo,
         ]);
     }
 
@@ -27,7 +30,7 @@ class TaskController extends Controller
 
         return Inertia::render('tasks/edit', [
             'users' => $users,
-            'status' => $status
+            'status' => $status,
         ]);
     }
 }
