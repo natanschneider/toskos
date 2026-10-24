@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TaskRequest;
 use App\Models\Status;
 use App\Models\Task;
-use App\Repositories\TaskRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +15,13 @@ class TaskController extends Controller
 {
     public static function Index(Request $request): Response
     {
-        $repo = TaskRepository::Index($request);
+        $repo = Task::query()
+            ->whereHas('team', function ($query) use ($request) {
+                $query->whereKey($request->user()->currentTeam->getKey());
+            })
+            ->where('parent_id', null)
+            ->with(['status', 'responsible'])
+            ->get();
 
         return Inertia::render('tasks/index', [
             'tasks' => $repo,
