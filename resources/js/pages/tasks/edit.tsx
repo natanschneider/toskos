@@ -1,6 +1,7 @@
 import TaskController from '@/actions/App/Http/Controllers/TaskController';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
+import TextEditor from '@/components/text-editor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,6 +14,8 @@ import {
 } from '@/components/ui/select';
 import { User, Status } from '@/types';
 import { Form, Head, usePage } from '@inertiajs/react';
+import { useRef } from 'react';
+import { MDXEditorMethods } from '@mdxeditor/editor';
 
 type Props = {
     users: User[];
@@ -21,6 +24,7 @@ type Props = {
 
 export default function TasksManipulate({ users, status }: Props) {
     const { currentTeam } = usePage().props;
+    const editorRef = useRef<MDXEditorMethods>(null);
 
     return (
         <>
@@ -38,16 +42,17 @@ export default function TasksManipulate({ users, status }: Props) {
                     <Form
                         {...TaskController.store.form(currentTeam.slug)}
                         className="w-full"
-                        transform={(data) =>
-                            Object.fromEntries(
+                        transform={(data) => ({
+                            ...Object.fromEntries(
                                 Object.entries(data).filter(
                                     ([, value]) =>
                                         value !== '' &&
                                         value !== null &&
                                         value !== undefined,
                                 ),
-                            )
-                        }
+                            ),
+                            markdown: editorRef.current?.getMarkdown() ?? '',
+                        })}
                     >
                         {({ errors, processing }) => (
                             <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -169,6 +174,13 @@ export default function TasksManipulate({ users, status }: Props) {
                                         </SelectContent>
                                     </Select>
                                     <InputError message={errors.status} />
+                                </div>
+
+                                <div className="w-full grid-cols-4 gap-2">
+                                    <TextEditor
+                                        editorRef={editorRef}
+                                        markdown={''}
+                                    />
                                 </div>
 
                                 <div className="flex items-center gap-4">
