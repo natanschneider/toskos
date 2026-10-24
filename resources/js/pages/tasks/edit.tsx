@@ -38,6 +38,16 @@ export default function TasksManipulate({ users, status }: Props) {
                     <Form
                         {...TaskController.store.form(currentTeam.slug)}
                         className="w-full"
+                        transform={(data) =>
+                            Object.fromEntries(
+                                Object.entries(data).filter(
+                                    ([, value]) =>
+                                        value !== '' &&
+                                        value !== null &&
+                                        value !== undefined,
+                                ),
+                            )
+                        }
                     >
                         {({ errors, processing }) => (
                             <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
