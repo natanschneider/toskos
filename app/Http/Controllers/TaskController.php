@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Repositories\TaskRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -36,20 +37,24 @@ class TaskController extends Controller
 
     public static function Store(TaskRequest $request): RedirectResponse
     {
-        $task = Task::create([
-            'name'               => $request->input('name'),
-            'start_date'         => $request->input('startDate'),
-            'end_date'           => $request->input('endDate'),
-            'planned_start_date' => $request->input('plannedStartDate'),
-            'planned_end_date'   => $request->input('plannedEndDate'),
-            'responsible'        => $request->input('responsible'),
-            'supervisor'         => $request->input('supervisor'),
-            'status_id'          => $request->input('status'),
-            'team_id'            => $request->input('team'),
-            'parent_id'          => $request->input('parent'),
-            'created_by'         => $request->user()->id,
-            'team_id'            => $request->user()->currentTeam->id,
-        ]);
+        DB::transaction(function () use ($request) {
+            $task = Task::create([
+                'name'               => $request->input('name'),
+                'start_date'         => $request->input('startDate'),
+                'end_date'           => $request->input('endDate'),
+                'planned_start_date' => $request->input('plannedStartDate'),
+                'planned_end_date'   => $request->input('plannedEndDate'),
+                'responsible'        => $request->input('responsible'),
+                'supervisor'         => $request->input('supervisor'),
+                'status_id'          => $request->input('status'),
+                'team_id'            => $request->input('team'),
+                'parent_id'          => $request->input('parent'),
+                'created_by'         => $request->user()->id,
+                'team_id'            => $request->user()->currentTeam->id,
+            ]);
+
+            return $task;
+        });
 
         return redirect()->route('task.index');
     }
