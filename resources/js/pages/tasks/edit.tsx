@@ -176,7 +176,7 @@ export default function TasksManipulate({ users, status }: Props) {
                                     <InputError message={errors.status} />
                                 </div>
 
-                                <div className="w-full grid-cols-4 gap-2">
+                                <div className="w-full col-span-1 md:col-span-2 lg:col-span-3 gap-2">
                                     <TextEditor
                                         editorRef={editorRef}
                                         markdown={''}
