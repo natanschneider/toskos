@@ -52,7 +52,6 @@ class TaskController extends Controller
                 'responsible'        => $request->input('responsible'),
                 'supervisor'         => $request->input('supervisor'),
                 'status_id'          => $request->input('status'),
-                'team_id'            => $request->input('team'),
                 'parent_id'          => $request->input('parent'),
                 'created_by'         => $request->user()->id,
                 'team_id'            => $request->user()->currentTeam->id,
