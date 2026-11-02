@@ -12,7 +12,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { User, Status } from '@/types';
+import { User, Status, Task } from '@/types';
 import { Form, Head, usePage } from '@inertiajs/react';
 import { useRef } from 'react';
 import { MDXEditorMethods } from '@mdxeditor/editor';
@@ -20,9 +20,10 @@ import { MDXEditorMethods } from '@mdxeditor/editor';
 type Props = {
     users: User[];
     status: Status[];
+    task: Task;
 };
 
-export default function TasksManipulate({ users, status }: Props) {
+export default function TasksManipulate({ users, status, task }: Props) {
     const { currentTeam } = usePage().props;
     const editorRef = useRef<MDXEditorMethods>(null);
 
@@ -176,7 +177,7 @@ export default function TasksManipulate({ users, status }: Props) {
                                     <InputError message={errors.status} />
                                 </div>
 
-                                <div className="w-full col-span-1 md:col-span-2 lg:col-span-3 gap-2">
+                                <div className="col-span-1 w-full gap-2 md:col-span-2 lg:col-span-3">
                                     <TextEditor
                                         editorRef={editorRef}
                                         markdown={''}

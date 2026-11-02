@@ -1,11 +1,11 @@
-import Heading from "@/components/heading";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { create, index } from "@/routes/task";
-import { Task } from "@/types";
-import { Head, Link, usePage } from "@inertiajs/react";
-import { useMemo, useState } from "react";
+import Heading from '@/components/heading';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { create, edit, index } from '@/routes/task';
+import { Task } from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { useMemo, useState } from 'react';
 
 type Props = {
     tasks?: Task[];
@@ -38,7 +38,14 @@ export default function TasksIndex({ tasks }: Props) {
                         description="Manage your tasks"
                     />
 
-                    <Link href={create({ current_team: currentTeam.slug, parent_task: null }).url}>
+                    <Link
+                        href={
+                            create({
+                                current_team: currentTeam.slug,
+                                parent_task: null,
+                            }).url
+                        }
+                    >
                         <Button>Create Task</Button>
                     </Link>
                 </div>
@@ -52,7 +59,7 @@ export default function TasksIndex({ tasks }: Props) {
                 </div>
 
                 <div className="space-y-3">
-                    {(tasks?.length === 0 || (! tasks)) ? (
+                    {tasks?.length === 0 || !tasks ? (
                         <p className="py-8 text-center text-muted-foreground">
                             No tasks found
                         </p>
@@ -66,7 +73,18 @@ export default function TasksIndex({ tasks }: Props) {
                             <div className="flex items-center gap-4">
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <span className="font-medium">{task.name}</span>
+                                        <Link
+                                            href={
+                                                edit({
+                                                    current_team:
+                                                        currentTeam.slug,
+                                                    task: task.id,
+                                                }).url
+                                            }
+                                            className="font-medium"
+                                        >
+                                            {task.name}
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -79,14 +97,14 @@ export default function TasksIndex({ tasks }: Props) {
                 </div>
             </div>
         </>
-    )
+    );
 }
 
 TasksIndex.layout = (props: { currentTeam?: { slug: string } | null }) => ({
     breadcrumbs: [
         {
             title: 'Tasks',
-            href: props.currentTeam ? index(props.currentTeam.slug) : '/'
+            href: props.currentTeam ? index(props.currentTeam.slug) : '/',
         },
     ],
 });

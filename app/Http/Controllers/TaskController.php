@@ -71,4 +71,21 @@ class TaskController extends Controller
 
         return redirect()->route('task.index');
     }
+
+    public static function Edit(string $current_team, string $task, Request $request, ?string $parent_task = null): Response
+    {
+        $users = $request->user()->currentTeam->members;
+
+        $status = Status::query()->get();
+
+        $task = Task::where('id', $task)
+            ->with(['status', 'responsible', 'children'])
+            ->get();
+
+        return Inertia::render('tasks/edit', [
+            'task' => $task,
+            'users' => $users,
+            'status' => $status,
+        ]);
+    }
 }
