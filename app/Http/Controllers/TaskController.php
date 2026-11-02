@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TaskRequest;
 use App\Models\Status;
 use App\Models\Task;
+use App\Repositories\FileRepository;
+use App\Repositories\HandleStringToFile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -55,6 +57,13 @@ class TaskController extends Controller
                 'parent_id'          => $request->input('parent'),
                 'created_by'         => $request->user()->id,
                 'team_id'            => $request->user()->currentTeam->id,
+            ]);
+
+            $fileRequest = (new HandleStringToFile())->handle($request);
+            $fileRepository = (new FileRepository())->upload($fileRequest->file('doc_file'), 'docs');
+
+            $task->update([
+                'doc_file' => $fileRepository['name'],
             ]);
 
             return $task;
