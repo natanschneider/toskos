@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories\Files;
+namespace App\Repositories;
 
 use App\Http\Requests\FileRequest;
 use Illuminate\Http\Request;
