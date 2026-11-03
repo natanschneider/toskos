@@ -23,9 +23,10 @@ type Props = {
     status: Status[];
     task: Task[];
     doc: string;
+    parent_task: string;
 };
 
-export default function TasksManipulate({ users, status, task, doc }: Props) {
+export default function TasksManipulate({ users, status, task, doc, parent_task }: Props) {
     const { currentTeam } = usePage().props;
     const editorRef = useRef<MDXEditorMethods>(null);
     const [query, setQuery] = useState('');
@@ -74,6 +75,7 @@ export default function TasksManipulate({ users, status, task, doc }: Props) {
                     >
                         {({ errors, processing }) => (
                             <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+                                { parent_task ? ( <input type='hidden' name='parent' id='parent' value={parent_task} /> ) : null}
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
                                     <Input id="name" name="name" required defaultValue={task ? task[0].name : undefined} />

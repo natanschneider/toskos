@@ -39,6 +39,7 @@ class TaskController extends Controller
         return Inertia::render('tasks/edit', [
             'users' => $users,
             'status' => $status,
+            'parent_task' => $parent_task
         ]);
     }
 
