@@ -17,6 +17,7 @@ import { Form, Head, Link, usePage } from '@inertiajs/react';
 import { useMemo, useRef, useState } from 'react';
 import { MDXEditorMethods } from '@mdxeditor/editor';
 import { Badge } from '@/components/ui/badge';
+import { index } from '@/routes/task';
 
 type Props = {
     users: User[];
@@ -289,3 +290,19 @@ export default function TasksManipulate({ users, status, task, doc, parent_task,
         </>
     );
 }
+
+TasksManipulate.layout = (props: {
+    currentTeam?: { slug: string } | null;
+    task?: Task[];
+}) => ({
+    breadcrumbs: [
+        {
+            title: 'Tasks',
+            href: props.currentTeam ? index(props.currentTeam.slug) : '/',
+        },
+        {
+            title: props?.task ? props?.task[0]?.name : 'Create task',
+            href: props?.task ? edit({ current_team: props.currentTeam.slug, task: props.task[0].id}) : ( props.currentTeam ? create({ current_team: props.currentTeam.slug}) : '/')
+        }
+    ],
+});
