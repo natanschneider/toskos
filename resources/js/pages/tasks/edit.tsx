@@ -1,4 +1,4 @@
-import TaskController from '@/actions/App/Http/Controllers/TaskController';
+import TaskController, { create, edit } from '@/actions/App/Http/Controllers/TaskController';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
 import TextEditor from '@/components/text-editor';
@@ -13,9 +13,10 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { User, Status, Task } from '@/types';
-import { Form, Head, usePage } from '@inertiajs/react';
-import { useRef } from 'react';
+import { Form, Head, Link, usePage } from '@inertiajs/react';
+import { useMemo, useRef, useState } from 'react';
 import { MDXEditorMethods } from '@mdxeditor/editor';
+import { Badge } from '@/components/ui/badge';
 
 type Props = {
     users: User[];
@@ -27,6 +28,18 @@ type Props = {
 export default function TasksManipulate({ users, status, task, doc }: Props) {
     const { currentTeam } = usePage().props;
     const editorRef = useRef<MDXEditorMethods>(null);
+    const [query, setQuery] = useState('');
+
+    const children = task ? task[0].children : [];
+
+    const filtered = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        if (!q) return children;
+
+        return children?.filter((task) => {
+            return task.name.toLowerCase().includes(q);
+        });
+    }, [children, query]);
 
     return (
         <>
@@ -204,6 +217,72 @@ export default function TasksManipulate({ users, status, task, doc }: Props) {
                             </div>
                         )}
                     </Form>
+
+                    {task && (
+                        <div className='flex flex-col space-y-6 p-4'>
+                            <div className="flex items-center justify-between">
+                                <Heading
+                                    variant="small"
+                                    title="Tasks"
+                                    description="Manage your tasks"
+                                />
+
+                                <Link
+                                    href={
+                                        create({
+                                            current_team: currentTeam.slug,
+                                            parent_task: task[0].id,
+                                        }).url
+                                    }
+                                >
+                                    <Button>Create Task</Button>
+                                </Link>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <Input
+                                    id="input-button-group"
+                                    placeholder="Type to search..."
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                />
+                            </div>
+                            <div className='space-y-3'>
+                                {task[0].children?.length === 0 ? (
+                                    <p className='py-8 text-center text-muted-foreground'>No tasks found</p>
+                                ) : null}
+                            </div>
+
+                            {filtered?.map((task) => (
+                                <div
+                                    key={task.id}
+                                    className="flex items-center justify-between gap-4 rounded-lg border p-4"
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <div>
+                                            <div className="flex items-center gap-2">
+                                                <Link
+                                                    href={
+                                                        edit({
+                                                            current_team:
+                                                                currentTeam.slug,
+                                                            task: task.id,
+                                                        }).url
+                                                    }
+                                                    className="font-medium"
+                                                >
+                                                    {task.name}
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-4">
+                                        <Badge>{task.responsible?.name}</Badge>
+                                        <Badge>{task.status.name}</Badge>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </>
