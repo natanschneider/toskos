@@ -24,14 +24,13 @@ type Props = {
     task: Task[];
     doc: string;
     parent_task: string;
+    children?: Task[];
 };
 
-export default function TasksManipulate({ users, status, task, doc, parent_task }: Props) {
+export default function TasksManipulate({ users, status, task, doc, parent_task, children }: Props) {
     const { currentTeam } = usePage().props;
     const editorRef = useRef<MDXEditorMethods>(null);
     const [query, setQuery] = useState('');
-
-    const children = task ? task[0].children : [];
 
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
@@ -249,7 +248,7 @@ export default function TasksManipulate({ users, status, task, doc, parent_task 
                                 />
                             </div>
                             <div className='space-y-3'>
-                                {task[0].children?.length === 0 ? (
+                                {children?.length === 0 ? (
                                     <p className='py-8 text-center text-muted-foreground'>No tasks found</p>
                                 ) : null}
                             </div>

@@ -80,7 +80,11 @@ class TaskController extends Controller
         $status = Status::query()->get();
 
         $task = Task::where('id', $task)
-            ->with(['status', 'responsible', 'children'])
+            ->with(['status', 'responsible'])
+            ->get();
+
+        $children = Task::where('parent_id', $task[0]->id)
+            ->with(['status', 'responsible'])
             ->get();
 
         $doc = null;
@@ -92,7 +96,8 @@ class TaskController extends Controller
             'users' => $users,
             'status' => $status,
             'task' => $task,
-            'doc' => $doc
+            'doc' => $doc,
+            'children' => $children,
         ]);
     }
 
