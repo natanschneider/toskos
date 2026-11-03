@@ -44,7 +44,7 @@ class TaskController extends Controller
 
     public static function Store(TaskRequest $request): RedirectResponse
     {
-        DB::transaction(function () use ($request) {
+        $task = DB::transaction(function () use ($request) {
             $task = Task::create([
                 'name'               => $request->input('name'),
                 'start_date'         => $request->input('startDate'),
@@ -69,7 +69,7 @@ class TaskController extends Controller
             return $task;
         });
 
-        return redirect()->route('task.index');
+        return redirect()->route('task.edit', $task['id']);
     }
 
     public static function Edit(string $current_team, string $task, Request $request): Response
@@ -121,6 +121,6 @@ class TaskController extends Controller
             return $task;
         });
 
-        return redirect()->route('task.index');
+        return redirect()->route('task.edit', $task);
     }
 }
