@@ -20,10 +20,11 @@ import { MDXEditorMethods } from '@mdxeditor/editor';
 type Props = {
     users: User[];
     status: Status[];
-    task: Task;
+    task: Task[];
+    doc: string;
 };
 
-export default function TasksManipulate({ users, status, task }: Props) {
+export default function TasksManipulate({ users, status, task, doc }: Props) {
     const { currentTeam } = usePage().props;
     const editorRef = useRef<MDXEditorMethods>(null);
 
@@ -41,7 +42,10 @@ export default function TasksManipulate({ users, status, task }: Props) {
                     />
 
                     <Form
-                        {...TaskController.store.form(currentTeam.slug)}
+                        {...(
+                            task ? TaskController.manipulate.form({ current_team: currentTeam.slug, task: task[0].id })
+                            : TaskController.store.form(currentTeam.slug)
+                        )}
                         className="w-full"
                         transform={(data) => ({
                             ...Object.fromEntries(
@@ -59,7 +63,7 @@ export default function TasksManipulate({ users, status, task }: Props) {
                             <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
-                                    <Input id="name" name="name" required />
+                                    <Input id="name" name="name" required defaultValue={task ? task[0].name : undefined} />
                                     <InputError message={errors.name} />
                                 </div>
 
@@ -71,6 +75,7 @@ export default function TasksManipulate({ users, status, task }: Props) {
                                         id="startDate"
                                         name="startDate"
                                         type="date"
+                                        defaultValue={task ? task[0].start_date?.toString() : undefined}
                                     />
                                     <InputError message={errors.startDate} />
                                 </div>
@@ -81,6 +86,7 @@ export default function TasksManipulate({ users, status, task }: Props) {
                                         id="endDate"
                                         name="endDate"
                                         type="date"
+                                        defaultValue={task ? task[0].end_date?.toString() : undefined}
                                     />
                                     <InputError message={errors.endDate} />
                                 </div>
@@ -93,6 +99,7 @@ export default function TasksManipulate({ users, status, task }: Props) {
                                         id="plannedStartDate"
                                         name="plannedStartDate"
                                         type="date"
+                                        defaultValue={task ? task[0].planned_start_date?.toString() : undefined}
                                     />
                                     <InputError
                                         message={errors.plannedStartDate}
@@ -107,6 +114,7 @@ export default function TasksManipulate({ users, status, task }: Props) {
                                         id="plannedEndDate"
                                         name="plannedEndDate"
                                         type="date"
+                                        defaultValue={task ? task[0].planned_end_date?.toString() : undefined}
                                     />
                                     <InputError
                                         message={errors.plannedEndDate}
@@ -117,7 +125,7 @@ export default function TasksManipulate({ users, status, task }: Props) {
                                     <Label htmlFor="responsible">
                                         Responsible
                                     </Label>
-                                    <Select name="responsible">
+                                    <Select name="responsible" defaultValue={task ? task[0].responsible?.id.toString() : undefined}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a responsible" />
                                         </SelectTrigger>
@@ -139,7 +147,7 @@ export default function TasksManipulate({ users, status, task }: Props) {
                                     <Label htmlFor="supervisor">
                                         Supervisor
                                     </Label>
-                                    <Select name="supervisor">
+                                    <Select name="supervisor" defaultValue={task ? task[0].supervisor?.toString() : undefined}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a supervisor" />
                                         </SelectTrigger>
@@ -159,7 +167,7 @@ export default function TasksManipulate({ users, status, task }: Props) {
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="status">Status</Label>
-                                    <Select name="status">
+                                    <Select name="status" defaultValue={task ? task[0].status_id.toString() : undefined}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a status" />
                                         </SelectTrigger>
@@ -180,7 +188,7 @@ export default function TasksManipulate({ users, status, task }: Props) {
                                 <div className="col-span-1 w-full gap-2 md:col-span-2 lg:col-span-3">
                                     <TextEditor
                                         editorRef={editorRef}
-                                        markdown={''}
+                                        markdown={doc ? doc : ''}
                                     />
                                 </div>
 

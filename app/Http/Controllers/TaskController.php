@@ -72,7 +72,7 @@ class TaskController extends Controller
         return redirect()->route('task.index');
     }
 
-    public static function Edit(string $current_team, string $task, Request $request, ?string $parent_task = null): Response
+    public static function Edit(string $current_team, string $task, Request $request): Response
     {
         $users = $request->user()->currentTeam->members;
 
@@ -82,10 +82,45 @@ class TaskController extends Controller
             ->with(['status', 'responsible', 'children'])
             ->get();
 
+        $doc = null;
+        if ($task[0]->doc_file) {
+            $doc = (new FileRepository)->get('docs', $task[0]->doc_file);
+        }
+
         return Inertia::render('tasks/edit', [
-            'task' => $task,
             'users' => $users,
             'status' => $status,
+            'task' => $task,
+            'doc' => $doc
         ]);
+    }
+
+    public static function Manipulate(string $current_team, string $task, TaskRequest $request): RedirectResponse
+    {
+        DB::transaction(function () use ($task, $request) {
+            $task = Task::where('id', $task);
+
+            $task->update([
+                'name'               => $request->input('name'),
+                'start_date'         => $request->input('startDate'),
+                'end_date'           => $request->input('endDate'),
+                'planned_start_date' => $request->input('plannedStartDate'),
+                'planned_end_date'   => $request->input('plannedEndDate'),
+                'responsible'        => $request->input('responsible'),
+                'supervisor'         => $request->input('supervisor'),
+                'status_id'          => $request->input('status'),
+            ]);
+
+            $fileRequest = (new HandleStringToFile())->handle($request);
+            $fileRepository = (new FileRepository())->upload($fileRequest->file('doc_file'), 'docs');
+
+            $task->update([
+                'doc_file' => $fileRepository['name'],
+            ]);
+
+            return $task;
+        });
+
+        return redirect()->route('task.index');
     }
 }

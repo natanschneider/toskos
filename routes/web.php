@@ -16,6 +16,7 @@ Route::prefix('{current_team}')
         Route::get('tasks/create/{parent_task?}', [TaskController::class, 'create'])->name('task.create');
         Route::post('tasks/create', [TaskController::class, 'store'])->name('task.store');
         Route::get('tasks/edit/{task}', [TaskController::class, 'edit'])->name('task.edit');
+        Route::put('tasks/edit/{task}', [TaskController::class, 'manipulate'])->name('task.manipulate');
     });
 
 Route::middleware(['auth'])->group(function () {
