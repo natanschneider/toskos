@@ -307,7 +307,7 @@ export default function TasksManipulate({ users, status, task, doc, parent_task,
                                     ),
                                 })}
                             >
-                                <input type='hidden' name='task_id' id='task_id' value={task[0].id} />
+                                <input type='hidden' name='task' id='task' value={task[0].id} />
                                 <Input
                                     maxLength={500}
                                     name='comment'
