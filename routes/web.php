@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\Teams\TeamInvitationController;
@@ -17,6 +18,7 @@ Route::prefix('{current_team}')
         Route::post('tasks/create', [TaskController::class, 'store'])->name('task.store');
         Route::get('tasks/edit/{task}', [TaskController::class, 'edit'])->name('task.edit');
         Route::put('tasks/edit/{task}', [TaskController::class, 'manipulate'])->name('task.manipulate');
+        Route::post('comments/create', [CommentController::class, 'create'])->name('comment.create');
     });
 
 Route::middleware(['auth'])->group(function () {

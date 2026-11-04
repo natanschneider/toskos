@@ -12,12 +12,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { User, Status, Task } from '@/types';
+import { User, Status, Task, Comment } from '@/types';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
 import { useMemo, useRef, useState } from 'react';
 import { MDXEditorMethods } from '@mdxeditor/editor';
 import { Badge } from '@/components/ui/badge';
 import { index } from '@/routes/task';
+import CommentController from '@/actions/App/Http/Controllers/CommentController';
 
 type Props = {
     users: User[];
@@ -26,9 +27,10 @@ type Props = {
     doc: string;
     parent_task: string;
     children?: Task[];
+    comments?: Comment[];
 };
 
-export default function TasksManipulate({ users, status, task, doc, parent_task, children }: Props) {
+export default function TasksManipulate({ users, status, task, doc, parent_task, children, comments }: Props) {
     const { currentTeam } = usePage().props;
     const editorRef = useRef<MDXEditorMethods>(null);
     const [query, setQuery] = useState('');
@@ -280,6 +282,61 @@ export default function TasksManipulate({ users, status, task, doc, parent_task,
                                     <div className="flex items-center gap-4">
                                         <Badge>{task.responsible?.name}</Badge>
                                         <Badge>{task.status.name}</Badge>
+                                    </div>
+                                </div>
+                            ))}
+
+                            <div className="flex items-center justify-between">
+                                <Heading
+                                    variant="small"
+                                    title="Comments"
+                                    description="View task comments"
+                                />
+                            </div>
+                            <Form
+                                {...CommentController.create.form(currentTeam?.slug)}
+                                className='flex items-center justify-between'
+                                transform={(data) => ({
+                                    ...Object.fromEntries(
+                                        Object.entries(data).filter(
+                                            ([, value]) =>
+                                                value !== '' &&
+                                                value !== null &&
+                                                value !== undefined,
+                                        ),
+                                    ),
+                                })}
+                            >
+                                <input type='hidden' name='task_id' id='task_id' value={task[0].id} />
+                                <Input
+                                    maxLength={500}
+                                    name='comment'
+                                    id='comment'
+                                />
+
+                                <Button type='submit'>Create Comment</Button>
+                            </Form>
+                            <div className='space-y-3'>
+                                {comments?.length === 0 ? (
+                                    <p className='py-8 text-center text-muted-foreground'>No comments found</p>
+                                ) : null}
+                            </div>
+                            {comments?.map((comment) => (
+                                <div
+                                    key={comment.id}
+                                    className="flex items-center justify-between gap-4 rounded-lg border p-4"
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <div>
+                                            <div className="flex items-center gap-2">
+                                                <p className="font-medium">
+                                                    {comment.comment}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-4">
+                                        <Badge>{comment.user.name}</Badge>
                                     </div>
                                 </div>
                             ))}

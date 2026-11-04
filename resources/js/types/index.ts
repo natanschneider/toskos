@@ -4,3 +4,4 @@ export type * from './teams';
 export type * from './ui';
 export type * from './task';
 export type * from './status';
+export type * from './comment';

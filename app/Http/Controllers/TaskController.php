@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequest;
+use App\Models\Comment;
 use App\Models\Status;
 use App\Models\Task;
 use App\Repositories\FileRepository;
@@ -92,12 +93,15 @@ class TaskController extends Controller
             $doc = (new FileRepository)->get('docs', $task[0]->doc_file);
         }
 
+        $comments = Comment::where('task_id', $task[0]->id)->with(['user'])->get();
+
         return Inertia::render('tasks/edit', [
             'users' => $users,
             'status' => $status,
             'task' => $task,
             'doc' => $doc,
             'children' => $children,
+            'comments' => $comments,
         ]);
     }
 
