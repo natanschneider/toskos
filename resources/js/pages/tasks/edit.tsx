@@ -92,7 +92,7 @@ export default function TasksManipulate({ users, status, task, doc, parent_task,
                                         id="startDate"
                                         name="startDate"
                                         type="date"
-                                        defaultValue={task ? task[0].start_date?.toString() : undefined}
+                                        defaultValue={task ? task[0].start_date?.substring(0, 10) : undefined}
                                     />
                                     <InputError message={errors.startDate} />
                                 </div>
@@ -103,7 +103,7 @@ export default function TasksManipulate({ users, status, task, doc, parent_task,
                                         id="endDate"
                                         name="endDate"
                                         type="date"
-                                        defaultValue={task ? task[0].end_date?.toString() : undefined}
+                                        defaultValue={task ? task[0].end_date?.substring(0, 10) : undefined}
                                     />
                                     <InputError message={errors.endDate} />
                                 </div>
@@ -116,7 +116,7 @@ export default function TasksManipulate({ users, status, task, doc, parent_task,
                                         id="plannedStartDate"
                                         name="plannedStartDate"
                                         type="date"
-                                        defaultValue={task ? task[0].planned_start_date?.toString() : undefined}
+                                        defaultValue={task ? task[0].planned_start_date?.substring(0, 10) : undefined}
                                     />
                                     <InputError
                                         message={errors.plannedStartDate}
@@ -131,7 +131,7 @@ export default function TasksManipulate({ users, status, task, doc, parent_task,
                                         id="plannedEndDate"
                                         name="plannedEndDate"
                                         type="date"
-                                        defaultValue={task ? task[0].planned_end_date?.toString() : undefined}
+                                        defaultValue={task ? task[0].planned_end_date?.substring(0, 10) : undefined}
                                     />
                                     <InputError
                                         message={errors.plannedEndDate}
