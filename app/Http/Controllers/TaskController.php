@@ -11,6 +11,7 @@ use App\Repositories\HandleStringToFile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -46,6 +47,8 @@ class TaskController extends Controller
 
     public static function Store(TaskRequest $request): RedirectResponse
     {
+        Gate::authorize('create', [Task::class, $request]);
+
         $task = DB::transaction(function () use ($request) {
             $task = Task::create([
                 'name'               => $request->input('name'),
@@ -76,6 +79,8 @@ class TaskController extends Controller
 
     public static function Edit(string $current_team, string $task, Request $request): Response
     {
+        Gate::authorize('view', [Task::find($task)]);
+
         $users = $request->user()->currentTeam->members;
 
         $status = Status::query()->get();
@@ -107,6 +112,8 @@ class TaskController extends Controller
 
     public static function Manipulate(string $current_team, string $task, TaskRequest $request): RedirectResponse
     {
+        Gate::authorize('update', [Task::find($task), $request]);
+
         DB::transaction(function () use ($task, $request) {
             $task = Task::where('id', $task);
 

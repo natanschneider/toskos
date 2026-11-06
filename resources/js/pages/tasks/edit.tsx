@@ -77,7 +77,8 @@ export default function TasksManipulate({ users, status, task, doc, parent_task,
                     >
                         {({ errors, processing }) => (
                             <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-                                { parent_task ? ( <input type='hidden' name='parent' id='parent' value={parent_task} /> ) : null}
+                                {parent_task ? (<input type='hidden' name='parent' id='parent' value={parent_task} />) : null}
+                                <input type='hidden' name='team' id='team' value={ task ? task[0].team_id : currentTeam?.id }/>
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Name</Label>
                                     <Input id="name" name="name" required defaultValue={task ? task[0].name : undefined} />
