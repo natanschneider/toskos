@@ -25,21 +25,15 @@ RUN composer install \
 COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 RUN mkdir -p \
-        storage/framework/cache \
-        storage/framework/sessions \
-        storage/framework/views \
-        storage/logs \
-        bootstrap/cache \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs \
+    bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
 RUN npm run build:ssr
-
-RUN php artisan migrate --force \
-    && php artisan storage:link --force 2>/dev/null || true \
-    && php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
 
 EXPOSE 9001
 

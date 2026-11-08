@@ -3,11 +3,11 @@ FROM php:8.4-fpm
 WORKDIR /var/www/html
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl libpng-dev libonig-dev libxml2-dev libpq-dev zip unzip \
+    curl libpng-dev libonig-dev libxml2-dev libpq-dev zip unzip libatomic1 \
     && docker-php-ext-install mbstring exif pcntl bcmath gd pdo pdo_pgsql \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSL https://nodejs.org/dist/v24.0.0/node-v24.0.0-linux-x64.tar.xz \
+RUN curl -fsSL https://nodejs.org/dist/v26.13.0/node-v26.13.0-linux-x64.tar.xz \
     | tar -xJ -C /usr/local --strip-components=1
 
 COPY . .
