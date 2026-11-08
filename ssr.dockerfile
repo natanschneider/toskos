@@ -35,6 +35,6 @@ RUN mkdir -p \
 
 RUN pnpm run build:ssr
 
-EXPOSE 13715
+EXPOSE 13714
 
 CMD ["node", "bootstrap/ssr/app.js"]

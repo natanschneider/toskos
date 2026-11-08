@@ -23,7 +23,7 @@ services:
             - "9001:9001"
         env_file: .env
         environment:
-            INERTIA_SSR_URL: http://toskos_ssr_ssr:13715
+            INERTIA_SSR_URL: http://toskos_ssr:13714
         volumes:
             - storage:/var/www/html/storage
             - bootstrap_cache:/var/www/html/bootstrap/cache
