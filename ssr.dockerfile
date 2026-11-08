@@ -37,4 +37,4 @@ RUN pnpm run build:ssr
 
 EXPOSE 13715
 
-CMD ["node", "bootstrap/ssr/ssr.js"]
+CMD ["node", "bootstrap/ssr/app.js"]
