@@ -5,7 +5,13 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\Teams\TeamInvitationController;
 use App\Http\Middleware\EnsureTeamMembership;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
+
+if (App::environment('production')) {
+    URL::forceScheme('https');
+}
 
 Route::inertia('/', 'welcome')->name('home');
 
