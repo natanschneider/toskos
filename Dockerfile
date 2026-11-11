@@ -12,13 +12,10 @@ WORKDIR /var/www/html
 RUN curl -fsSL https://nodejs.org/dist/v26.13.0/node-v26.13.0-linux-x64.tar.xz \
     | tar -xJ -C /usr/local --strip-components=1
 
-RUN rm -f /usr/local/bin/pnpm /usr/local/bin/pnpx \
-    && npm install --global pnpm@12.18.0
-
 COPY package*.json ./
 COPY pnpm*.yaml ./
 
-RUN pnpm install --frozen-lockfile
+RUN npm ci
 
 RUN curl -sS https://getcomposer.org/installer \
     | php -- --install-dir=/usr/bin --filename=composer

@@ -12,10 +12,7 @@ RUN curl -fsSL https://nodejs.org/dist/v26.13.0/node-v26.13.0-linux-x64.tar.xz \
 
 COPY . .
 
-RUN rm -f /usr/local/bin/pnpm /usr/local/bin/pnpx \
-    && npm install --global pnpm@12.18.0
-
-RUN pnpm install --frozen-lockfile
+RUN npm ci
 
 RUN curl -sS https://getcomposer.org/installer \
     | php -- --install-dir=/usr/bin --filename=composer
@@ -33,7 +30,7 @@ RUN mkdir -p \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-RUN pnpm run build:ssr
+RUN npm run build:ssr
 
 EXPOSE 13714
 
