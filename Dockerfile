@@ -35,7 +35,7 @@ RUN mkdir -p \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-RUN pnpm run build:ssr
+RUN npm run build:ssr
 
 EXPOSE 9001
 
