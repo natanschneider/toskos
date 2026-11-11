@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 
-if (App::environment('production')) {
-    URL::forceScheme('https');
-}
+Route::inertia('/', 'welcome')->name('home');
 
 Route::get('/debug-proto', function () {
     return [
@@ -23,8 +21,6 @@ Route::get('/debug-proto', function () {
         'remote_addr' => $_SERVER['REMOTE_ADDR'] ?? null,
     ];
 });
-
-Route::inertia('/', 'welcome')->name('home');
 
 Route::prefix('{current_team}')
     ->middleware(['auth', 'verified', EnsureTeamMembership::class])
