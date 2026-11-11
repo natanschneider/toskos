@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
-
+1
         $middleware->web(append: [
             HandleAppearance::class,
             HandleInertiaRequests::class,
@@ -27,6 +27,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->trustProxies(at: [
             '127.0.0.1',
+            '192.168.1.1',
+            '10.0.0.0',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
