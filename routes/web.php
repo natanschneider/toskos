@@ -15,6 +15,15 @@ if (App::environment('production')) {
     URL::forceScheme('https');
 }
 
+Route::get('/debug-proto', function () {
+    return [
+        'secure' => request()->secure(),
+        'scheme' => request()->getScheme(),
+        'x_forwarded_proto' => request()->header('X-Forwarded-Proto'),
+        'remote_addr' => $_SERVER['REMOTE_ADDR'] ?? null,
+    ];
+});
+
 Route::inertia('/', 'welcome')->name('home');
 
 Route::prefix('{current_team}')
@@ -34,4 +43,4 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('invitations/{invitation}', [TeamInvitationController::class, 'decline'])->name('invitations.decline');
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
