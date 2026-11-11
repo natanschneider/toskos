@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -11,11 +13,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $id
  * @property string $name
  */
-class Status extends Model
+final class Status extends Model
 {
-    protected $table = 'status';
-
     public $timestamps = false;
+
+    protected $table = 'status';
 
     protected $fillable = [
         'name',
@@ -23,8 +25,6 @@ class Status extends Model
 
     /**
      * Get the tasks
-     *
-     * @return HasMany
      */
     public function tasks(): HasMany
     {

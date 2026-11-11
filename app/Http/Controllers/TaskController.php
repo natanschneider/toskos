@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequest;
@@ -15,7 +17,7 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class TaskController extends Controller
+final class TaskController extends Controller
 {
     public static function Index(Request $request): Response
     {
@@ -41,7 +43,7 @@ class TaskController extends Controller
         return Inertia::render('tasks/edit', [
             'users' => $users,
             'status' => $status,
-            'parent_task' => $parent_task
+            'parent_task' => $parent_task,
         ]);
     }
 
@@ -51,17 +53,17 @@ class TaskController extends Controller
 
         $task = DB::transaction(function () use ($request) {
             $task = Task::create([
-                'name'               => $request->input('name'),
-                'start_date'         => $request->input('startDate'),
-                'end_date'           => $request->input('endDate'),
+                'name' => $request->input('name'),
+                'start_date' => $request->input('startDate'),
+                'end_date' => $request->input('endDate'),
                 'planned_start_date' => $request->input('plannedStartDate'),
-                'planned_end_date'   => $request->input('plannedEndDate'),
-                'responsible'        => $request->input('responsible'),
-                'supervisor'         => $request->input('supervisor'),
-                'status_id'          => $request->input('status'),
-                'parent_id'          => $request->input('parent'),
-                'created_by'         => $request->user()->id,
-                'team_id'            => $request->user()->currentTeam->id,
+                'planned_end_date' => $request->input('plannedEndDate'),
+                'responsible' => $request->input('responsible'),
+                'supervisor' => $request->input('supervisor'),
+                'status_id' => $request->input('status'),
+                'parent_id' => $request->input('parent'),
+                'created_by' => $request->user()->id,
+                'team_id' => $request->user()->currentTeam->id,
             ]);
 
             $fileRequest = (new HandleStringToFile())->handle($request);
@@ -118,14 +120,14 @@ class TaskController extends Controller
             $task = Task::where('id', $task);
 
             $task->update([
-                'name'               => $request->input('name'),
-                'start_date'         => $request->input('startDate'),
-                'end_date'           => $request->input('endDate'),
+                'name' => $request->input('name'),
+                'start_date' => $request->input('startDate'),
+                'end_date' => $request->input('endDate'),
                 'planned_start_date' => $request->input('plannedStartDate'),
-                'planned_end_date'   => $request->input('plannedEndDate'),
-                'responsible'        => $request->input('responsible'),
-                'supervisor'         => $request->input('supervisor'),
-                'status_id'          => $request->input('status'),
+                'planned_end_date' => $request->input('plannedEndDate'),
+                'responsible' => $request->input('responsible'),
+                'supervisor' => $request->input('supervisor'),
+                'status_id' => $request->input('status'),
             ]);
 
             $fileRequest = (new HandleStringToFile())->handle($request);

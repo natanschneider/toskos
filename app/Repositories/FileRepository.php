@@ -10,7 +10,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-class FileRepository
+final class FileRepository
 {
     public function upload(UploadedFile $file, string $folder): array
     {
@@ -24,8 +24,8 @@ class FileRepository
             'originalName' => $file->getClientOriginalName(),
         ];
 
-        if (Storage::disk('local')->exists('temp/' . $file->getClientOriginalName())) {
-            Storage::disk('local')->delete('temp/' . $file->getClientOriginalName());
+        if (Storage::disk('local')->exists('temp/'.$file->getClientOriginalName())) {
+            Storage::disk('local')->delete('temp/'.$file->getClientOriginalName());
         }
 
         return $ret;
@@ -44,8 +44,8 @@ class FileRepository
             'originalName' => $file->getClientOriginalName(),
         ];
 
-        if (Storage::disk('local')->exists('temp/' . $file->getClientOriginalName())) {
-            Storage::disk('local')->delete('temp/' . $file->getClientOriginalName());
+        if (Storage::disk('local')->exists('temp/'.$file->getClientOriginalName())) {
+            Storage::disk('local')->delete('temp/'.$file->getClientOriginalName());
         }
 
         return $ret;
@@ -71,7 +71,7 @@ class FileRepository
         return Storage::disk('s3')->get(sprintf('%s/%s', $folder, $name)) ?? '';
     }
 
-    protected function validateFile(UploadedFile $file): void
+    private function validateFile(UploadedFile $file): void
     {
         $maxFileSize = 36700160; // 35MB
 
@@ -80,8 +80,8 @@ class FileRepository
         }
     }
 
-    protected function generateUniqueFilename(UploadedFile $file): string
+    private function generateUniqueFilename(UploadedFile $file): string
     {
-        return Hash::make($file->getClientOriginalName() . Carbon::now()->getTimestamp()) . '.' . $file->getClientOriginalExtension();
+        return Hash::make($file->getClientOriginalName().Carbon::now()->getTimestamp()).'.'.$file->getClientOriginalExtension();
     }
 }

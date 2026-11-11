@@ -7,7 +7,7 @@ namespace Database\Seeders;
 use DB;
 use Illuminate\Database\Seeder;
 
-class Status extends Seeder
+final class Status extends Seeder
 {
     /**
      * Run the database seeds.

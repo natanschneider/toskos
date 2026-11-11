@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CommentRequest extends FormRequest
+final class CommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +26,7 @@ class CommentRequest extends FormRequest
     {
         return [
             'comment' => ['required'],
-            'task' => ['required', 'exists:tasks,id']
+            'task' => ['required', 'exists:tasks,id'],
         ];
     }
 }

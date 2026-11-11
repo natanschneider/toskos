@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -14,11 +16,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $comment
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @property-read User $user
  * @property-read Task $task
  */
-class Comment extends Model
+final class Comment extends Model
 {
     protected $table = 'comments';
 
@@ -30,8 +31,6 @@ class Comment extends Model
 
     /**
      * Get the user that owns the comment.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -40,8 +39,6 @@ class Comment extends Model
 
     /**
      * Get the task that owns the comment.
-     *
-     * @return BelongsTo
      */
     public function task(): BelongsTo
     {

@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Status;
 
 /**
  * Class Task
@@ -25,13 +26,12 @@ use App\Models\Status;
  * @property int|null $parent_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @property-read Status $status
  * @property-read Team $team
  * @property-read Task|null $parent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $children
  */
-class Task extends Model
+final class Task extends Model
 {
     protected $table = 'tasks';
 
@@ -59,8 +59,6 @@ class Task extends Model
 
     /**
      * Get the status associated with the task.
-     *
-     * @return BelongsTo
      */
     public function status(): BelongsTo
     {
@@ -69,8 +67,6 @@ class Task extends Model
 
     /**
      * Get the team associated with the task.
-     *
-     * @return BelongsTo
      */
     public function team(): BelongsTo
     {
@@ -79,28 +75,22 @@ class Task extends Model
 
     /**
      * Get the parent task.
-     *
-     * @return BelongsTo
      */
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(Task::class, 'parent_id');
+        return $this->belongsTo(self::class, 'parent_id');
     }
 
     /**
      * Get the child tasks.
-     *
-     * @return HasMany
      */
     public function children(): HasMany
     {
-        return $this->hasMany(Task::class, 'parent_id');
+        return $this->hasMany(self::class, 'parent_id');
     }
 
     /**
      * Get the comments
-     *
-     * @return HasMany
      */
     public function comments(): HasMany
     {
@@ -109,18 +99,14 @@ class Task extends Model
 
     /**
      * Get the subtasks
-     *
-     * @return HasMany
      */
     public function subTasks(): HasMany
     {
-        return $this->hasMany(Task::class, 'parent_id');
+        return $this->hasMany(self::class, 'parent_id');
     }
 
     /**
      * Get responsible user
-     *
-     * @return BelongsTo
      */
     public function responsible(): BelongsTo
     {
@@ -129,8 +115,6 @@ class Task extends Model
 
     /**
      * Get supervisor user
-     *
-     * @return BelongsTo
      */
     public function supervisorUser(): BelongsTo
     {
